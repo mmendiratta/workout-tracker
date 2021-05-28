@@ -1,13 +1,12 @@
 package com.mendiratta.workouttracker.controller
 
-import com.mendiratta.workouttracker.model.Tracker
+import com.mendiratta.workouttracker.model.WorkoutModel
 import com.mendiratta.workouttracker.service.TrackerService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping("/api/v1")
 class TrackerController {
 
     @Autowired
@@ -19,12 +18,24 @@ class TrackerController {
     }
 
     @GetMapping
-    fun findAll(): List<Tracker> {
+    fun findAll(): List<WorkoutModel> {
         return trackerService.findAll()
     }
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable id: String): Tracker? {
+    fun findById(@PathVariable id: String): WorkoutModel? {
         return trackerService.findById(id)
     }
+
+    @PostMapping("/create")
+    fun create(@RequestBody workout: WorkoutModel): WorkoutModel {
+        return trackerService.save(workout)
+    }
+
+    @DeleteMapping("/{id}")
+    fun delete(@PathVariable id: String) {
+        trackerService.deleteById(id)
+    }
+
+
 }
